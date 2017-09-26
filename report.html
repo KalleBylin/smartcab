@@ -13172,12 +13172,12 @@ ViVOsMzMzMzMzKrECZaZmZmZmVmVOMEyMzMzMzOrkv8PGG/HWv/GXWsAAAAASUVORK5CYII=
 <p><strong>Answer:</strong></p>
 <p>The chosen features have the following options:</p>
 <ul>
-<li>'waypoint': [None, 'forward', 'left', 'right']</li>
+<li>'waypoint': ['forward', 'left', 'right']</li>
 <li>'light': ['green', 'red']</li>
 <li>'left': [None, 'forward', 'left', 'right']</li>
 <li>'oncoming': [None, 'forward', 'left', 'right']</li>
 </ul>
-<p>The possible combinations, and size of the state space, is 4x2x4x4 = 128</p>
+<p>The possible combinations, and size of the state space, is 3x2x4x4 = 96</p>
 <p>The learn() function that updates the Q-table is called after every action. Taking into account that in the current setting the driving agent starts off making around 20-30 actions per trial and the update_delay flag is set to about 10 ms between each steps, makes it quite reasonable that the driving agent can learn a policy for each state in a reasonable number of training trials. Although this also depends on the exploration rate. If epsilon decays slowly the agent is allowed to explore more and can visit more states quickly. If epsilon decays too quickly the agent would start to take more actions based on policy, choosing certain actions more even though other unexplored actions might lead to better rewards.</p>
 
 </div>
@@ -16152,7 +16152,7 @@ $$ \epsilon = e^{-at}, \textrm{for } 0 &lt; a &lt; 1$$</p>
 -- None : 0.45
 -- left : -35.82</li>
 </ul>
-<p>Here the driving agent would be standing at a red light wanting to turn left. This would be allowed in some cases, but here there is an agent coming from the left intending to continue straight through the intersection. Turning right would then lead to an accident. The policy gives a positive reward for standing still, strong negative rewards for moving forward or to the left at a red light and a negative reward for turning right at a red light with another car coming straight from the left.</p>
+<p>Here the driving agent would be standing at a red light wanting to turn right. This would be allowed in some cases, but here there is an agent coming from the left intending to continue straight through the intersection. Turning right would then lead to an accident. The policy gives a positive reward for standing still, strong negative rewards for moving forward or to the left at a red light and a negative reward for turning right at a red light with another car coming straight from the left.</p>
 <ul>
 <li>('forward', 'green', 'left', None)
 -- forward : 2.25
@@ -16214,7 +16214,7 @@ $$ \epsilon = e^{-at}, \textrm{for } 0 &lt; a &lt; 1$$</p>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer:</strong></p>
-<p>In terms of the environment it seems to me like every intersection is basically the same situation but with some random differences (red or green light, another agent coming from one direction or another, arriving at the intersection from the top, the left or from another direction, etc). In this sense, it wouldn't really matter where the agent is in the future because every intersection is the same and the agent can't predict how the variables will be in future intersections. The only thing that matters is moving in the right direction and that is given in the present state, making future rewards irrelevant.</p>
+<p>In terms of the environment it seems to me like every intersection is basically the same situation but with some random differences (red or green light, another agent coming from one direction or another, arriving at the intersection from the top, the left or from another direction, etc). What makes it worse is that the destination changes after every trial. Future rewards and gamma would be useful if we could make the agent learn which states takes it closer to the destination and which takes is further away. At a given state a left turn might lead it closer to the destination and in the next state a right turn might lead it closer. This variation makes the future rewards practically useless and might even lead it wrong if it tries a good action for a new state in which another action would have been better.</p>
 <p>For the agent, it reminds me of the sequence of rewards concept mentioned in the lectures for which infinite rewards made both options equal even though in the short-term one seemed better than the other. Here the path is finite, but the agent doesn't seem to know exactly when that is. Without that knowledge, a path that takes 10 steps adding a reward of +1 for each step would seem equal to a path in the same direction of only 5 steps with a reward of +2 for each step. The second option would almost certainly be preferred by any person in the Smartcab because he would arrive at his destination in half the time of the other path. Once again, the most efficient decision in this case would be to try to follow the present waypoint at every state.</p>
 
 </div>
